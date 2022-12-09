@@ -266,7 +266,7 @@ def main(unused_argv):
       # Define the model and create clones.
       model_fn = _build_deeplab
       model_args = (dataset.get_one_shot_iterator(), {
-          common.OUTPUT_TYPE: dataset.num_classes
+          common.OUTPUT_TYPE: dataset.num_of_classes
       }, dataset.ignore_label)
       clones = model_deploy.create_clones(config, model_fn, args=model_args)
 
