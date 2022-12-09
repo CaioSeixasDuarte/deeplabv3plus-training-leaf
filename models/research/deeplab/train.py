@@ -224,7 +224,7 @@ def _build_deeplab(inputs_queue, outputs_to_num_classes, ignore_label):
 
   return outputs_to_scales_to_logits
 
-
+@tf.function
 def main(unused_argv):
   tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
   # Set up deployment (i.e., multi-GPUs and/or multi-replicas).
@@ -367,7 +367,6 @@ def main(unused_argv):
         allow_soft_placement=True, log_device_placement=False)
 
     # Start the training.
-    @tf.function
     slim.learning.train(
         train_tensor,
         logdir=FLAGS.train_logdir,
