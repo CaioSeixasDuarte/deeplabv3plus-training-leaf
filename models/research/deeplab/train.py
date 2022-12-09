@@ -167,25 +167,16 @@ flags.DEFINE_string('train_split', 'train',
 flags.DEFINE_string('dataset_dir', None, 'Where the dataset reside.')
 
 
-def _build_deeplab(inputs_queue, outputs_to_num_classes, ignore_label):
+def _build_deeplab(iterator, outputs_to_num_classes, ignore_label):
   """Builds a clone of DeepLab.
-
   Args:
-    inputs_queue: A prefetch queue for images and labels.
-    outputs_to_num_classes: A map from output type to the number of classes.
-      For example, for the task of semantic segmentation with 21 semantic
-      classes, we would have outputs_to_num_classes['semantic'] = 21.
+    iterator: An iterator of type tf.data.Iterator for images and labels.
+    outputs_to_num_classes: A map from output type to the number of classes. For
+      example, for the task of semantic segmentation with 21 semantic classes,
+      we would have outputs_to_num_classes['semantic'] = 21.
     ignore_label: Ignore label.
-
-  Returns:
-    A map of maps from output_type (e.g., semantic prediction) to a
-      dictionary of multi-scale logits names to logits. For each output_type,
-      the dictionary has keys which correspond to the scales and values which
-      correspond to the logits. For example, if `scales` equals [1.0, 1.5],
-      then the keys would include 'merged_logits', 'logits_1.00' and
-      'logits_1.50'.
   """
-  samples = inputs_queue.dequeue()
+  samples = iterator.get_next()
 
   # Add name to input and label nodes so we can add to summary.
   samples[common.IMAGE] = tf.identity(
@@ -224,7 +215,6 @@ def _build_deeplab(inputs_queue, outputs_to_num_classes, ignore_label):
 
   return outputs_to_scales_to_logits
 
-@tf.function
 def main(unused_argv):
   tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
   # Set up deployment (i.e., multi-GPUs and/or multi-replicas).
@@ -272,7 +262,7 @@ def main(unused_argv):
 
       # Define the model and create clones.
       model_fn = _build_deeplab
-      model_args = (inputs_queue, {
+      model_args = (dataset.get_one_shot_iterator(), {
           common.OUTPUT_TYPE: dataset.num_classes
       }, dataset.ignore_label)
       clones = model_deploy.create_clones(config, model_fn, args=model_args)
