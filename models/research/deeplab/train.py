@@ -240,21 +240,23 @@ def main(unused_argv):
 
   with tf.Graph().as_default() as graph:
     with tf.device(config.inputs_device()):
-      samples = input_generator.get(
-          dataset,
-          FLAGS.train_crop_size,
-          clone_batch_size,
+      dataset = data_generator.Dataset(
+          dataset_name=FLAGS.dataset,
+          split_name=FLAGS.train_split,
+          dataset_dir=FLAGS.dataset_dir,
+          batch_size=clone_batch_size,
+          crop_size=[int(sz) for sz in FLAGS.train_crop_size],
           min_resize_value=FLAGS.min_resize_value,
           max_resize_value=FLAGS.max_resize_value,
           resize_factor=FLAGS.resize_factor,
           min_scale_factor=FLAGS.min_scale_factor,
           max_scale_factor=FLAGS.max_scale_factor,
           scale_factor_step_size=FLAGS.scale_factor_step_size,
-          dataset_split=FLAGS.train_split,
+          model_variant=FLAGS.model_variant,
+          num_readers=4,
           is_training=True,
-          model_variant=FLAGS.model_variant)
-      inputs_queue = prefetch_queue.prefetch_queue(
-          samples, capacity=128 * config.num_clones)
+          should_shuffle=True,
+          should_repeat=True)
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
