@@ -25,10 +25,9 @@ import numpy as np
 import tensorflow as tf
 
 from deeplab.core import resnet_v1_beta
-from tensorflow.contrib.slim.nets import resnet_utils
 
-slim = tf.contrib.slim
-
+import tf_slim as slim
+from nets import resnet_utils
 
 def create_test_input(batch, height, width, channels):
   """Create test input tensor."""
