@@ -367,6 +367,7 @@ def main(unused_argv):
         allow_soft_placement=True, log_device_placement=False)
 
     # Start the training.
+    @tf.function
     slim.learning.train(
         train_tensor,
         logdir=FLAGS.train_logdir,
