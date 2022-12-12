@@ -160,6 +160,7 @@ class Conv2D(tf.keras.layers.Conv2D, tf.layers.Layer):
       return self.activation(outputs)
     return outputs
 
+@add_arg_scope
 def conv2d(inputs,
            num_outputs,
            kernel_size,
