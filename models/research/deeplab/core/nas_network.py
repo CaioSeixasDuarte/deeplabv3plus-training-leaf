@@ -42,9 +42,11 @@ from tensorboard.plugins.hparams import api as hp
 from deeplab.core import nas_genotypes
 from deeplab.core import utils
 from deeplab.core.nas_cell import NASBaseCell
-from tensorflow.contrib.slim.nets import resnet_utils
 
 import tf_slim as slim
+
+from nets import resnet_utils
+
 from tf_slim import arg_scope
 
 resize_bilinear = utils.resize_bilinear
