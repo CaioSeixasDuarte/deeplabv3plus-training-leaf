@@ -329,7 +329,7 @@ def main(unused_argv):
       # Create a session.
       sess = tf.compat.v1.Session()
       # Initialize the variable
-      sess.run(global_step_tensor.initializer)
+      sess.run(global_step.initializer)
       # Get the variable value.
       print('global_step: %s' % tf.compat.v1.train.global_step(sess,
       global_step))
