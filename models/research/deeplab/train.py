@@ -279,7 +279,7 @@ def _build_deeplab(iterator, outputs_to_num_classes, ignore_label):
         top_k_percent_pixels=FLAGS.top_k_percent_pixels,
         scope=output)
 
-@tf.function
+
 def main(unused_argv):
   tf.logging.set_verbosity(tf.logging.INFO)
   # Set up deployment (i.e., multi-GPUs and/or multi-replicas).
@@ -320,11 +320,19 @@ def main(unused_argv):
           should_repeat=True)
 
     # Create the global step on the device storing the variables.
-    #with tf.device(config.variables_device()):
-    with tf.Session() as sess:
-      global_step = tf.train.get_or_create_global_step()
+    with tf.device(config.variables_device()):
+      #global_step = tf.train.get_or_create_global_step()
 
-      print("GLOBAL STEP: ", global_step)
+      # Create a variable to hold the global_step.
+      global_step_tensor = tf.Variable(10, trainable=False, name='global_step')
+      # Create a session.
+      sess = tf.compat.v1.Session()
+      # Initialize the variable
+      sess.run(global_step_tensor.initializer)
+      # Get the variable value.
+      print('global_step: %s' % tf.compat.v1.train.global_step(sess,
+      global_step_tensor))
+
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -422,7 +430,7 @@ def main(unused_argv):
 
       # Create gradient update op.
       grad_updates = optimizer.apply_gradients(
-          grads_and_vars, global_step=global_step)
+          grads_and_vars, global_step=global_step_tensor)
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
       with tf.control_dependencies([update_op]):
