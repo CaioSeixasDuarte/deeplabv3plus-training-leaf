@@ -53,12 +53,11 @@ Alan L. Yuille (* equal contribution)
 (https://arxiv.org/abs/1412.7062)
 """
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import slim as contrib_slim
 from deeplab.core import dense_prediction_cell
 from deeplab.core import feature_extractor
 from deeplab.core import utils
 
-slim = contrib_slim
+import tf_slim as slim
 
 LOGITS_SCOPE_NAME = 'logits'
 MERGED_LOGITS_SCOPE = 'merged_logits'
