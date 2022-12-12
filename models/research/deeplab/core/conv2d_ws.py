@@ -31,7 +31,7 @@ from __future__ import print_function
 
 import tensorflow.compat.v1 as tf
 
-import tensorflow.initializers as tf_initializer
+import tensorflow.keras.initializers as tf_initializer
 
 from tf_slim.layers import layers
 from tf_slim.layers import utils
