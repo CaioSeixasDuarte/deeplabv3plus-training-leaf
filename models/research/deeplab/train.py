@@ -24,11 +24,11 @@ from __future__ import print_function
 import six
 import tensorflow.compat.v1 as tf
 #from tensorflow.contrib import quantize as contrib_quantize
-import tf.quantization.quantize as contrib_quantize
+contrib_quantize = tf.quantization.quantize
 
 
 #from tensorflow.contrib import tfprof as contrib_tfprof
-import tf.compat.v1.profiler as contrib_tfprof
+contrib_tfprof = tf.compat.v1.profiler
 
 from deeplab import common
 from deeplab import model
