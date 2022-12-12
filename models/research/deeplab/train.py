@@ -28,7 +28,6 @@ contrib_quantize = tf.quantization.quantize
 
 
 #from tensorflow.contrib import tfprof as contrib_tfprof
-contrib_tfprof = tf.compat.v1.profiler
 
 from deeplab import common
 from deeplab import model
@@ -437,10 +436,8 @@ def main(unused_argv):
     if profile_dir is not None:
       tf.gfile.MakeDirs(profile_dir)
 
-    with contrib_tfprof.ProfileContext(
-        enabled=profile_dir is not None, profile_dir=profile_dir):
-      init_fn = None
-      if FLAGS.tf_initial_checkpoint:
+    init_fn = None
+    if FLAGS.tf_initial_checkpoint:
         init_fn = train_utils.get_model_init_fn(
             FLAGS.train_logdir,
             FLAGS.tf_initial_checkpoint,
@@ -448,19 +445,19 @@ def main(unused_argv):
             last_layers,
             ignore_missing_vars=True)
 
-      slim.learning.train(
-          train_tensor,
-          logdir=FLAGS.train_logdir,
-          log_every_n_steps=FLAGS.log_steps,
-          master=FLAGS.master,
-          number_of_steps=FLAGS.training_number_of_steps,
-          is_chief=(FLAGS.task == 0),
-          session_config=session_config,
-          startup_delay_steps=startup_delay_steps,
-          init_fn=init_fn,
-          summary_op=summary_op,
-          save_summaries_secs=FLAGS.save_summaries_secs,
-          save_interval_secs=FLAGS.save_interval_secs)
+    slim.learning.train(
+        train_tensor,
+        logdir=FLAGS.train_logdir,
+        log_every_n_steps=FLAGS.log_steps,
+        master=FLAGS.master,
+        number_of_steps=FLAGS.training_number_of_steps,
+        is_chief=(FLAGS.task == 0),
+        session_config=session_config,
+        startup_delay_steps=startup_delay_steps,
+        init_fn=init_fn,
+        summary_op=summary_op,
+        save_summaries_secs=FLAGS.save_summaries_secs,
+        save_interval_secs=FLAGS.save_interval_secs)
 
 
 if __name__ == '__main__':
