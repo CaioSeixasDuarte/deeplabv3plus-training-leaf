@@ -36,9 +36,6 @@ from __future__ import print_function
 
 from six.moves import range
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import framework as contrib_framework
-from tensorflow.contrib import layers as contrib_layers
-from tensorflow.contrib import slim as contrib_slim
 from tensorflow.contrib import training as contrib_training
 
 from deeplab.core import nas_genotypes
@@ -46,8 +43,8 @@ from deeplab.core import utils
 from deeplab.core.nas_cell import NASBaseCell
 from tensorflow.contrib.slim.nets import resnet_utils
 
-arg_scope = contrib_framework.arg_scope
-slim = contrib_slim
+from tf_slim import arg_scope
+import tf_slim as slim
 resize_bilinear = utils.resize_bilinear
 scale_dimension = utils.scale_dimension
 
@@ -80,9 +77,9 @@ def nas_arg_scope(weight_decay=4e-5,
       'scale': True,
   }
   batch_norm = utils.get_batch_norm_fn(sync_batch_norm_method)
-  weights_regularizer = contrib_layers.l2_regularizer(weight_decay)
-  weights_initializer = contrib_layers.variance_scaling_initializer(
-      factor=1 / 3.0, mode='FAN_IN', uniform=True)
+  weights_regularizer = tf.keras.regularizers.L2(weight_decay)
+  weights_initializer = tf.keras.initializers.VarianceScaling(
+    scale=1 / 3.0, mode='fan_in', distribution='untruncated_normal', seed=None)
   with arg_scope([slim.fully_connected, slim.conv2d, slim.separable_conv2d],
                  weights_regularizer=weights_regularizer,
                  weights_initializer=weights_initializer):
