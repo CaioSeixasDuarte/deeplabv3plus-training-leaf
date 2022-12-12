@@ -323,6 +323,8 @@ def main(unused_argv):
     with tf.device(config.variables_device()):
       global_step = tf.train.get_or_create_global_step()
 
+      print("GLOBAL STEP: ", global_step)
+
       # Define the model and create clones.
       model_fn = _build_deeplab
       model_args = (dataset.get_one_shot_iterator(), {
@@ -338,14 +340,9 @@ def main(unused_argv):
     # Gather initial summaries.
     summaries = set(tf.get_collection(tf.GraphKeys.SUMMARIES))
 
-    print("1111111111111111111111111111111111111111111111111111111111111")
-
     # Add summaries for model variables.
     for model_var in tf.model_variables():
       summaries.add(tf.summary.histogram(model_var.op.name, model_var))
-
-    print("2222222222222222222222222222222222222222222222222222222222222222")
-
 
     # Add summaries for images, labels, semantic predictions
     if FLAGS.save_summaries_images:
@@ -371,15 +368,9 @@ def main(unused_argv):
           tf.summary.image(
               'samples/%s' % common.OUTPUT_TYPE, summary_predictions))
 
-    print("33333333333333333333333333333333333333333333333333333333333333333")
-
-
     # Add summaries for losses.
     for loss in tf.get_collection(tf.GraphKeys.LOSSES, first_clone_scope):
       summaries.add(tf.summary.scalar('losses/%s' % loss.op.name, loss))
-
-    print("444444444444444444444444444444444444444444444444444444444")
-
 
     # Build the optimizer based on the device specification.
     with tf.device(config.optimizer_device()):
@@ -404,8 +395,6 @@ def main(unused_argv):
             learning_rate=FLAGS.adam_learning_rate, epsilon=FLAGS.adam_epsilon)
       else:
         raise ValueError('Unknown optimizer')
-
-    print("5555555555555555555555555555555555555555555555555555")
 
     if FLAGS.quantize_delay_step >= 0:
       if FLAGS.num_clones > 1:
@@ -438,9 +427,6 @@ def main(unused_argv):
       with tf.control_dependencies([update_op]):
         train_tensor = tf.identity(total_loss, name='train_op')
 
-
-    print("6666666666666666666666666666666666666666666666")
-
     # Add the summaries from the first clone. These contain the summaries
     # created by model_fn and either optimize_clones() or _gather_clone_loss().
     summaries |= set(
@@ -457,8 +443,6 @@ def main(unused_argv):
     profile_dir = FLAGS.profile_logdir
     if profile_dir is not None:
       tf.gfile.MakeDirs(profile_dir)
-
-    print("7777777777777777777777777777777777777777777777")
 
     init_fn = None
     if FLAGS.tf_initial_checkpoint:
