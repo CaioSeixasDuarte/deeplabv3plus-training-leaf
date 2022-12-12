@@ -30,11 +30,9 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import framework as contrib_framework
-from tensorflow.contrib import layers as contrib_layers
 
-from tensorflow.contrib.layers.python.layers import layers
-from tensorflow.contrib.layers.python.layers import utils
+from tf_slim.layers import layers
+from tf_slim.layers import utils
 
 
 class Conv2D(tf.keras.layers.Conv2D, tf.layers.Layer):
@@ -160,8 +158,6 @@ class Conv2D(tf.keras.layers.Conv2D, tf.layers.Layer):
       return self.activation(outputs)
     return outputs
 
-
-@contrib_framework.add_arg_scope
 def conv2d(inputs,
            num_outputs,
            kernel_size,
@@ -172,7 +168,7 @@ def conv2d(inputs,
            activation_fn=tf.nn.relu,
            normalizer_fn=None,
            normalizer_params=None,
-           weights_initializer=contrib_layers.xavier_initializer(),
+           weights_initializer=tf.initializers.GlorotUniform(), #contrib_layers.xavier_initializer(),
            weights_regularizer=None,
            biases_initializer=tf.zeros_initializer(),
            biases_regularizer=None,
