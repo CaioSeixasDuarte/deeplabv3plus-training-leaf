@@ -17,11 +17,11 @@
 
 import six
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import framework as contrib_framework
 
 from deeplab.core import preprocess_utils
 from deeplab.core import utils
 
+import tf_slim as slim
 
 def _div_maybe_zero(total_loss, num_present):
   """Normalizes the total loss with the number of present pixels."""
@@ -211,22 +211,14 @@ def get_model_init_fn(train_logdir,
   if not initialize_last_layer:
     exclude_list.extend(last_layers)
 
-  variables_to_restore = contrib_framework.get_variables_to_restore(
+  variables_to_restore = slim.get_variables_to_restore(
       exclude=exclude_list)
 
   if variables_to_restore:
-    init_op, init_feed_dict = contrib_framework.assign_from_checkpoint(
+    return slim.assign_from_checkpoint_fn(
         tf_initial_checkpoint,
         variables_to_restore,
         ignore_missing_vars=ignore_missing_vars)
-    global_step = tf.train.get_or_create_global_step()
-
-    def restore_fn(sess):
-      sess.run(init_op, init_feed_dict)
-      sess.run([global_step])
-
-    return restore_fn
-
   return None
 
 
