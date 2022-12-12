@@ -51,13 +51,13 @@ from __future__ import print_function
 import collections
 from six.moves import range
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import slim as contrib_slim
 
 from deeplab.core import utils
-from tensorflow.contrib.slim.nets import resnet_utils
 from nets.mobilenet import conv_blocks as mobilenet_v3_ops
 
-slim = contrib_slim
+import tf_slim as slim
+
+from nets import resnet_utils
 
 
 _DEFAULT_MULTI_GRID = [1, 1, 1]
