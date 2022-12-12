@@ -23,7 +23,6 @@ from __future__ import division
 from __future__ import print_function
 import six
 import tensorflow.compat.v1 as tf
-import tensorflow as tf2
 #from tensorflow.contrib import quantize as contrib_quantize
 contrib_quantize = tf.quantization.quantize
 
@@ -322,7 +321,7 @@ def main(unused_argv):
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
-      global_step = tf2.train.get_or_create_global_step()
+      global_step = tf.train.get_or_create_global_step()
 
       # Define the model and create clones.
       model_fn = _build_deeplab
