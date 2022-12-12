@@ -421,7 +421,7 @@ def main(unused_argv):
 
       # Create gradient update op.
       grad_updates = optimizer.apply_gradients(
-          grads_and_vars, global_step=reader.get_tensor('global_step'))
+          grads_and_vars, global_step=_get_global_step_read())
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
       with tf.control_dependencies([update_op]):
