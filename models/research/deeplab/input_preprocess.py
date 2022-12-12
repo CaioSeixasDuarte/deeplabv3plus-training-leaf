@@ -1,3 +1,4 @@
+# Lint as: python2, python3
 # Copyright 2018 The TensorFlow Authors All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
 # ==============================================================================
 
 """Prepares the data used for DeepLab training/evaluation."""
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from deeplab.core import feature_extractor
 from deeplab.core import preprocess_utils
 
@@ -69,7 +70,7 @@ def preprocess_image_and_label(image,
   if is_training and label is None:
     raise ValueError('During training, label must be provided.')
   if model_variant is None:
-    tf.compat.v1.logging.warning('Default mean-subtraction is performed. Please specify '
+    tf.logging.warning('Default mean-subtraction is performed. Please specify '
                        'a model_variant. See feature_extractor.network_map for '
                        'supported model variants.')
 
@@ -82,7 +83,7 @@ def preprocess_image_and_label(image,
     label = tf.cast(label, tf.int32)
 
   # Resize image and label to the desired range.
-  if min_resize_value is not None or max_resize_value is not None:
+  if min_resize_value or max_resize_value:
     [processed_image, label] = (
         preprocess_utils.resize_to_range(
             image=processed_image,
@@ -103,7 +104,7 @@ def preprocess_image_and_label(image,
     processed_image.set_shape([None, None, 3])
 
   # Pad image and label to have dimensions >= [crop_height, crop_width]
-  image_shape = tf.shape(input=processed_image)
+  image_shape = tf.shape(processed_image)
   image_height = image_shape[0]
   image_width = image_shape[1]
 

@@ -18,7 +18,7 @@ from absl import app
 from absl import flags
 import numpy as np
 from PIL import Image
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 flags.DEFINE_string('quantized_graph_def_path', None,

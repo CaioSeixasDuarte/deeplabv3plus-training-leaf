@@ -1,3 +1,4 @@
+# Lint as: python2, python3
 # Copyright 2018 The TensorFlow Authors All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +16,7 @@
 
 """Tests for DeepLab model and some helper functions."""
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from deeplab import common
 from deeplab import model
@@ -60,7 +61,7 @@ class DeeplabModelTest(tf.test.TestCase):
         g = tf.Graph()
         with g.as_default():
           with self.test_session(graph=g):
-            inputs = tf.random.uniform(
+            inputs = tf.random_uniform(
                 (batch_size, crop_size[0], crop_size[1], 3))
             outputs_to_scales_to_logits = model.multi_scale_logits(
                 inputs, model_options, image_pyramid=image_pyramid)
@@ -87,19 +88,20 @@ class DeeplabModelTest(tf.test.TestCase):
         add_image_level_feature=True,
         aspp_with_batch_norm=True,
         logits_kernel_size=1,
+        decoder_output_stride=[4],
         model_variant='mobilenet_v2')  # Employ MobileNetv2 for fast test.
 
     g = tf.Graph()
     with g.as_default():
       with self.test_session(graph=g) as sess:
-        inputs = tf.random.uniform(
+        inputs = tf.random_uniform(
             (1, crop_size[0], crop_size[1], 3))
         outputs_to_scales_to_logits = model.multi_scale_logits(
             inputs,
             model_options,
             image_pyramid=[1.0])
 
-        sess.run(tf.compat.v1.global_variables_initializer())
+        sess.run(tf.global_variables_initializer())
         outputs_to_scales_to_logits = sess.run(outputs_to_scales_to_logits)
 
         # Check computed results for each output type.
@@ -116,20 +118,20 @@ class DeeplabModelTest(tf.test.TestCase):
     outputs_to_num_classes = {'semantic': 2}
     expected_endpoints = ['merged_logits']
     dense_prediction_cell_config = [
-      {'kernel': 3, 'rate': [1, 6], 'op': 'conv', 'input': -1},
-      {'kernel': 3, 'rate': [18, 15], 'op': 'conv', 'input': 0},
+        {'kernel': 3, 'rate': [1, 6], 'op': 'conv', 'input': -1},
+        {'kernel': 3, 'rate': [18, 15], 'op': 'conv', 'input': 0},
     ]
     model_options = common.ModelOptions(
         outputs_to_num_classes,
         crop_size,
         output_stride=16)._replace(
-        aspp_with_batch_norm=True,
-        model_variant='mobilenet_v2',
-        dense_prediction_cell_config=dense_prediction_cell_config)
+            aspp_with_batch_norm=True,
+            model_variant='mobilenet_v2',
+            dense_prediction_cell_config=dense_prediction_cell_config)
     g = tf.Graph()
     with g.as_default():
       with self.test_session(graph=g):
-        inputs = tf.random.uniform(
+        inputs = tf.random_uniform(
             (batch_size, crop_size[0], crop_size[1], 3))
         outputs_to_scales_to_model_results = model.multi_scale_logits(
             inputs,
@@ -137,8 +139,8 @@ class DeeplabModelTest(tf.test.TestCase):
             image_pyramid=[1.0])
         for output in outputs_to_num_classes:
           scales_to_model_results = outputs_to_scales_to_model_results[output]
-          self.assertListEqual(scales_to_model_results.keys(),
-                               expected_endpoints)
+          self.assertListEqual(
+              list(scales_to_model_results), expected_endpoints)
           self.assertEqual(len(scales_to_model_results), 1)
 
 

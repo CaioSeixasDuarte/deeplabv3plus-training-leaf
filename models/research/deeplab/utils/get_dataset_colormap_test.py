@@ -1,3 +1,4 @@
+# Lint as: python2, python3
 # Copyright 2018 The TensorFlow Authors All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 """Tests for get_dataset_colormap.py."""
 
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from deeplab.utils import get_dataset_colormap
 
@@ -54,7 +55,7 @@ class VisualizationUtilTest(tf.test.TestCase):
 
   def testUnExpectedLabelValueForLabelToPASCALColorImage(self):
     """Raise ValueError when input value exceeds range."""
-    label = np.array([[120], [300]])
+    label = np.array([[120], [600]])
     with self.assertRaises(ValueError):
       get_dataset_colormap.label_to_color_image(
           label, get_dataset_colormap.get_pascal_name())
