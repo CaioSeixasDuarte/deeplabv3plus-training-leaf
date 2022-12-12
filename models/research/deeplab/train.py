@@ -321,10 +321,10 @@ def main(unused_argv):
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
-      #global_step = tf.train.get_or_create_global_step()
+      global_step = tf.train.get_or_create_global_step()
 
       # Create a variable to hold the global_step.
-      global_step_tensor = tf.Variable(10, trainable=False, name='global_step')
+      #global_step_tensor = tf.Variable(10, trainable=False, name='global_step')
       # Create a session.
       sess = tf.compat.v1.Session()
       # Initialize the variable
