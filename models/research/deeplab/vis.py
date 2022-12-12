@@ -33,7 +33,7 @@ from deeplab import model
 from deeplab.datasets import data_generator
 from deeplab.utils import save_annotation
 
-flags = tf.app.flags
+flags = tf.compat.v1.app.flags
 
 FLAGS = flags.FLAGS
 

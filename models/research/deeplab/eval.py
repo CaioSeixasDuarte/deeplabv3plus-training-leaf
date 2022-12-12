@@ -29,7 +29,7 @@ from deeplab import common
 from deeplab import model
 from deeplab.datasets import data_generator
 
-flags = tf.app.flags
+flags = tf.compat.v1.app.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('master', '', 'BNS name of the tensorflow server')

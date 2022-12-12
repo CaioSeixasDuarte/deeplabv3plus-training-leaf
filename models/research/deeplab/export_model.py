@@ -24,7 +24,7 @@ from deeplab import common
 from deeplab import input_preprocess
 from deeplab import model
 
-slim = tf.contrib.slim
+import tf_slim as slim
 flags = tf.app.flags
 
 FLAGS = flags.FLAGS
