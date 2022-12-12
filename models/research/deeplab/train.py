@@ -338,9 +338,14 @@ def main(unused_argv):
     # Gather initial summaries.
     summaries = set(tf.get_collection(tf.GraphKeys.SUMMARIES))
 
+    print("1111111111111111111111111111111111111111111111111111111111111")
+
     # Add summaries for model variables.
     for model_var in tf.model_variables():
       summaries.add(tf.summary.histogram(model_var.op.name, model_var))
+
+    print("2222222222222222222222222222222222222222222222222222222222222222")
+
 
     # Add summaries for images, labels, semantic predictions
     if FLAGS.save_summaries_images:
@@ -366,9 +371,15 @@ def main(unused_argv):
           tf.summary.image(
               'samples/%s' % common.OUTPUT_TYPE, summary_predictions))
 
+    print("33333333333333333333333333333333333333333333333333333333333333333")
+
+
     # Add summaries for losses.
     for loss in tf.get_collection(tf.GraphKeys.LOSSES, first_clone_scope):
       summaries.add(tf.summary.scalar('losses/%s' % loss.op.name, loss))
+
+    print("444444444444444444444444444444444444444444444444444444444")
+
 
     # Build the optimizer based on the device specification.
     with tf.device(config.optimizer_device()):
