@@ -36,8 +36,12 @@ from deeplab.utils import train_utils
 from deployment import model_deploy
 
 import tf_slim as slim
-flags = tf.compat.v1.app.flags
-FLAGS = flags.FLAGS
+#flags = tf.compat.v1.app.flags
+#FLAGS = flags.FLAGS
+
+from absl import app
+from absl import flags
+from absl import logging
 
 # Settings for multi-GPUs/multi-replicas training.
 
@@ -463,4 +467,4 @@ def main(unused_argv):
 if __name__ == '__main__':
   flags.mark_flag_as_required('train_logdir')
   flags.mark_flag_as_required('dataset_dir')
-  tf.app.run()
+  app.run() #tf.app.run()

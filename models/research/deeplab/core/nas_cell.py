@@ -130,7 +130,6 @@ class NASBaseCell(object):
     net.append(prev_layer)
     return net
 
-  @tf.function
   def _apply_conv_operation(self, net, operation, stride,
                             is_from_original_input):
     """Applies the predicted conv operation to net."""
