@@ -16,10 +16,8 @@
 
 """This script contains utility functions."""
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import framework as contrib_framework
-from tensorflow.contrib import slim as contrib_slim
 
-slim = contrib_slim
+import tf_slim as slim
 
 
 # Quantized version of sigmoid function.
