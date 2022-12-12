@@ -405,6 +405,8 @@ def main(unused_argv):
       else:
         raise ValueError('Unknown optimizer')
 
+    print("5555555555555555555555555555555555555555555555555555")
+
     if FLAGS.quantize_delay_step >= 0:
       if FLAGS.num_clones > 1:
         raise ValueError('Quantization doesn\'t support multi-clone yet.')
@@ -436,6 +438,9 @@ def main(unused_argv):
       with tf.control_dependencies([update_op]):
         train_tensor = tf.identity(total_loss, name='train_op')
 
+
+    print("6666666666666666666666666666666666666666666666")
+
     # Add the summaries from the first clone. These contain the summaries
     # created by model_fn and either optimize_clones() or _gather_clone_loss().
     summaries |= set(
@@ -452,6 +457,8 @@ def main(unused_argv):
     profile_dir = FLAGS.profile_logdir
     if profile_dir is not None:
       tf.gfile.MakeDirs(profile_dir)
+
+    print("7777777777777777777777777777777777777777777777")
 
     init_fn = None
     if FLAGS.tf_initial_checkpoint:
