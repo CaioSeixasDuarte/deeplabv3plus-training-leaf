@@ -199,6 +199,7 @@ class NASBaseCell(object):
     net = tf.concat(values=states_to_combine, axis=3)
     return net
 
+  @tf.function
   def _apply_drop_path(self, net):
     """Apply drop_path regularization."""
     drop_path_keep_prob = self._drop_path_keep_prob
