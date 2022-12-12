@@ -279,7 +279,7 @@ def _build_deeplab(iterator, outputs_to_num_classes, ignore_label):
         top_k_percent_pixels=FLAGS.top_k_percent_pixels,
         scope=output)
 
-
+@tf.function
 def main(unused_argv):
   tf.logging.set_verbosity(tf.logging.INFO)
   # Set up deployment (i.e., multi-GPUs and/or multi-replicas).
