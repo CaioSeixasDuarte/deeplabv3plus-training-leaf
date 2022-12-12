@@ -43,6 +43,8 @@ from absl import app
 from absl import flags
 from absl import logging
 
+FLAGS = flags.FLAGS
+
 # Settings for multi-GPUs/multi-replicas training.
 
 flags.DEFINE_integer('num_clones', 1, 'Number of clones to deploy.')
