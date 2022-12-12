@@ -320,10 +320,9 @@ def main(unused_argv):
           should_repeat=True)
 
     # Create the global step on the device storing the variables.
+    @tf_export(v1=['train.get_or_create_global_step'])
     with tf.device(config.variables_device()):
-      #global_step = tf.train.get_or_create_global_step()
-
-      global_step = tf.Variable(0, name="global_step", trainable=False)
+      global_step = tf.train.get_or_create_global_step()
 
       print("GLOBAL STEP: ", global_step)
 
