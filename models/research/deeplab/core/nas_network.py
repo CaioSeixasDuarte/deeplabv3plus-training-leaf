@@ -36,7 +36,9 @@ from __future__ import print_function
 
 from six.moves import range
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import training as contrib_training
+#from tensorflow.contrib import training as contrib_training
+
+from tensorboard.plugins.hparams import api as hp
 
 from deeplab.core import nas_genotypes
 from deeplab.core import utils
@@ -52,7 +54,7 @@ scale_dimension = utils.scale_dimension
 def config(num_conv_filters=20,
            total_training_steps=500000,
            drop_path_keep_prob=1.0):
-  return contrib_training.HParams(
+  return hp.HParam(
       # Multiplier when spatial size is reduced by 2.
       filter_scaling_rate=2.0,
       # Number of filters of the stem output tensor.
