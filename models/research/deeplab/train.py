@@ -328,10 +328,10 @@ def main(unused_argv):
       # Create a session.
       sess = tf.compat.v1.Session()
       # Initialize the variable
-      sess.run(global_step_tensor.initializer)
+      sess.run(global_step.initializer)
       # Get the variable value.
       print('global_step: %s' % tf.compat.v1.train.global_step(sess,
-      global_step_tensor))
+      global_step))
 
 
       # Define the model and create clones.
@@ -430,7 +430,7 @@ def main(unused_argv):
 
       # Create gradient update op.
       grad_updates = optimizer.apply_gradients(
-          grads_and_vars, global_step=global_step_tensor)
+          grads_and_vars, global_step=global_step)
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
       with tf.control_dependencies([update_op]):
