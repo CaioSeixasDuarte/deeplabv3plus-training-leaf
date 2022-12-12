@@ -331,9 +331,9 @@ def main(unused_argv):
       # Initialize the variable
       sess.run(global_step.initializer)
       # Get the variable value.
-      print('global_step: %s' % tf.compat.v1.train.global_step(sess,
-      global_step))
+      #print('global_step: %s' % tf.compat.v1.train.global_step(sess, global_step))
 
+      global_step = tf.compat.v1.train.global_step(sess, global_step) 
 
       #global_step = tf.Variable(0, name="global_step")
 
