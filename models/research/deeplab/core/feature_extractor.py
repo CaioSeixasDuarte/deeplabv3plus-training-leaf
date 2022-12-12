@@ -19,7 +19,6 @@ import copy
 import functools
 
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import slim as contrib_slim
 
 from deeplab.core import nas_network
 from deeplab.core import resnet_v1_beta
@@ -29,7 +28,7 @@ from nets.mobilenet import mobilenet
 from nets.mobilenet import mobilenet_v2
 from nets.mobilenet import mobilenet_v3
 
-slim = contrib_slim
+import tf_slim as slim
 
 # Default end point for MobileNetv2 (one-based indexing).
 _MOBILENET_V2_FINAL_ENDPOINT = 'layer_18'
