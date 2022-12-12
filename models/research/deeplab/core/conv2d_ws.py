@@ -31,6 +31,8 @@ from __future__ import print_function
 
 import tensorflow.compat.v1 as tf
 
+import tensorflow.initializers as tf_initializer
+
 from tf_slim.layers import layers
 from tf_slim.layers import utils
 
@@ -168,7 +170,7 @@ def conv2d(inputs,
            activation_fn=tf.nn.relu,
            normalizer_fn=None,
            normalizer_params=None,
-           weights_initializer=tensorflow.initializers.GlorotUniform(), #contrib_layers.xavier_initializer(),
+           weights_initializer=tf_initializer.GlorotUniform(), #contrib_layers.xavier_initializer(),
            weights_regularizer=None,
            biases_initializer=tf.zeros_initializer(),
            biases_regularizer=None,
