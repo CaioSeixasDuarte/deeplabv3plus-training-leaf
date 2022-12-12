@@ -24,15 +24,16 @@ import functools
 from six.moves import range
 from six.moves import zip
 import tensorflow.compat.v1 as tf
-from tensorflow.contrib import framework as contrib_framework
-from tensorflow.contrib import slim as contrib_slim
 from deeplab.core import xception as xception_utils
 from deeplab.core.utils import resize_bilinear
 from deeplab.core.utils import scale_dimension
-from tensorflow.contrib.slim.nets import resnet_utils
 
-arg_scope = contrib_framework.arg_scope
-slim = contrib_slim
+
+import tf_slim as slim
+
+from nets import resnet_utils
+
+from tf_slim import arg_scope
 
 separable_conv2d_same = functools.partial(xception_utils.separable_conv2d_same,
                                           regularize_depthwise=True)
@@ -198,7 +199,6 @@ class NASBaseCell(object):
     net = tf.concat(values=states_to_combine, axis=3)
     return net
 
-  @contrib_framework.add_arg_scope
   def _apply_drop_path(self, net):
     """Apply drop_path regularization."""
     drop_path_keep_prob = self._drop_path_keep_prob

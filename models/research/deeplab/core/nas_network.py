@@ -44,8 +44,9 @@ from deeplab.core import utils
 from deeplab.core.nas_cell import NASBaseCell
 from tensorflow.contrib.slim.nets import resnet_utils
 
-from tf_slim import arg_scope
 import tf_slim as slim
+from tf_slim import arg_scope
+
 resize_bilinear = utils.resize_bilinear
 scale_dimension = utils.scale_dimension
 
