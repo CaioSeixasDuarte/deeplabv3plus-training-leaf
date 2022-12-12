@@ -36,7 +36,6 @@ from __future__ import print_function
 
 from six.moves import range
 import tensorflow.compat.v1 as tf
-#from tensorflow.contrib import training as contrib_training
 
 from tensorboard.plugins.hparams import api as hp
 
