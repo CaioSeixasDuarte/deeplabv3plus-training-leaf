@@ -322,9 +322,22 @@ def main(unused_argv):
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
       #global_step = tf.train.get_or_create_global_step()
-      global_step = tf.Variable(0, name="global_step")
 
-      print("GLOBAL STEP: ", global_step)
+
+      # Create a variable to hold the global_step.
+      global_step = tf.Variable(0, trainable=False, name='global_step')
+      # Create a session.
+      sess = tf.compat.v1.Session()
+      # Initialize the variable
+      sess.run(global_step_tensor.initializer)
+      # Get the variable value.
+      print('global_step: %s' % tf.compat.v1.train.global_step(sess,
+      global_step))
+
+
+      #global_step = tf.Variable(0, name="global_step")
+
+      #print("GLOBAL STEP: ", global_step)
 
       # Define the model and create clones.
       model_fn = _build_deeplab
