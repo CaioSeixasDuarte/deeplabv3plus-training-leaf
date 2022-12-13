@@ -313,9 +313,8 @@ def get_model_learning_rate(learning_policy,
     ValueError: If `boundaries` and `boundary_learning_rates` are not set for
       multi_steps learning rate decay.
   """
-  #global_step = tf.train.get_or_create_global_step()
-  global_step = tf.Variable(0, trainable=False, name='global_step')
-  adjusted_global_step = tf.maximum(graph.get_tensor_by_name("global_step:0") - slow_start_step, 0)
+  global_step = tf.train.get_or_create_global_step()
+  adjusted_global_step = tf.maximum(global_step - slow_start_step, 0)
   if decay_steps == 0.0:
     tf.logging.info('Setting decay_steps to total training steps.')
     decay_steps = training_number_of_steps - slow_start_step
@@ -356,10 +355,10 @@ def get_model_learning_rate(learning_policy,
     adjusted_slow_start_learning_rate = (
         slow_start_learning_rate +
         (base_learning_rate - slow_start_learning_rate) *
-        tf.to_float(graph.get_tensor_by_name("global_step:0")) / slow_start_step)
+        tf.to_float(global_step) / slow_start_step)
   elif slow_start_burnin_type != 'none':
     raise ValueError('Unknown burnin type.')
 
   # Employ small learning rate at the first few steps for warm start.
-  return tf.where(graph.get_tensor_by_name("global_step:0") < slow_start_step,
+  return tf.where(global_step < slow_start_step,
                   adjusted_slow_start_learning_rate, learning_rate)
