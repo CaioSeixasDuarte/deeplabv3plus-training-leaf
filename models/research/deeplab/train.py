@@ -36,7 +36,13 @@ from deeplab.utils import train_utils
 from deployment import model_deploy
 
 import tf_slim as slim
-flags = tf.compat.v1.app.flags
+#flags = tf.compat.v1.app.flags
+#FLAGS = flags.FLAGS
+
+from absl import app
+from absl import flags
+from absl import logging
+
 FLAGS = flags.FLAGS
 
 # Settings for multi-GPUs/multi-replicas training.
