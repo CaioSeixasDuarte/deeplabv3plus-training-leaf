@@ -315,8 +315,7 @@ def main(unused_argv):
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
-      #global_step = tf.train.get_or_create_global_step()]
-      global_step = tf.Variable(0, trainable=False)
+      global_step = tf.train.get_or_create_global_step()
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -433,19 +432,6 @@ def main(unused_argv):
         allow_soft_placement=True, log_device_placement=False)
 
     # Start the training.
-    profile_dir = FLAGS.profile_logdir
-    if profile_dir is not None:
-      tf.gfile.MakeDirs(profile_dir)
-
-    init_fn = None
-    if FLAGS.tf_initial_checkpoint:
-        init_fn = train_utils.get_model_init_fn(
-            FLAGS.train_logdir,
-            FLAGS.tf_initial_checkpoint,
-            FLAGS.initialize_last_layer,
-            last_layers,
-            ignore_missing_vars=True)
-
     slim.learning.train(
         train_tensor,
         logdir=FLAGS.train_logdir,
@@ -455,7 +441,12 @@ def main(unused_argv):
         is_chief=(FLAGS.task == 0),
         session_config=session_config,
         startup_delay_steps=startup_delay_steps,
-        init_fn=init_fn,
+        init_fn=train_utils.get_model_init_fn(
+            FLAGS.train_logdir,
+            FLAGS.tf_initial_checkpoint,
+            FLAGS.initialize_last_layer,
+            last_layers,
+            ignore_missing_vars=True),
         summary_op=summary_op,
         save_summaries_secs=FLAGS.save_summaries_secs,
         save_interval_secs=FLAGS.save_interval_secs)
@@ -463,6 +454,6 @@ def main(unused_argv):
 
 if __name__ == '__main__':
   flags.mark_flag_as_required('train_logdir')
+  flags.mark_flag_as_required('tf_initial_checkpoint')
   flags.mark_flag_as_required('dataset_dir')
-  #app.run(main) 
   tf.app.run()
