@@ -36,13 +36,7 @@ from deeplab.utils import train_utils
 from deployment import model_deploy
 
 import tf_slim as slim
-#flags = tf.compat.v1.app.flags
-#FLAGS = flags.FLAGS
-
-from absl import app
-from absl import flags
-from absl import logging
-
+flags = tf.compat.v1.app.flags
 FLAGS = flags.FLAGS
 
 # Settings for multi-GPUs/multi-replicas training.
@@ -321,10 +315,7 @@ def main(unused_argv):
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
-    #with tf.Session() as sess:
       global_step = tf.train.get_or_create_global_step()
-
-      #print("GLOBAL STEP: ", global_step)
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -472,4 +463,4 @@ def main(unused_argv):
 if __name__ == '__main__':
   flags.mark_flag_as_required('train_logdir')
   flags.mark_flag_as_required('dataset_dir')
-  app.run(main) #tf.app.run()
+  tf.app.run()
