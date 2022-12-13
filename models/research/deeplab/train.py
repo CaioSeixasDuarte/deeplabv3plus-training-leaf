@@ -412,7 +412,8 @@ def main(unused_argv):
             grads_and_vars, grad_mult)
 
       # Create gradient update op.
-      grad_updates = optimizer.apply_gradients(
+      with tf.GradientTape() as tape:
+        grad_updates = optimizer.apply_gradients(
           grads_and_vars)#, global_step=global_step)
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
