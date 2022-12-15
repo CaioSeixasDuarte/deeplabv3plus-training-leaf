@@ -317,6 +317,16 @@ def main(unused_argv):
     with tf.device(config.variables_device()):
       #global_step = tf.train.get_or_create_global_step()
 
+      # Create a variable to hold the global_step.
+      global_step_tensor = tf.Variable(0, trainable=False, name='global_step')
+      # Create a session.
+      sess = tf.Session(graph=graph)
+      # Initialize the variable
+      sess.run(global_step_tensor.initializer)
+      # Get the variable value.
+      #print('global_step: %s' % tf.compat.v1.train.global_step(sess,global_step_tensor))
+
+
       # Define the model and create clones.
       model_fn = _build_deeplab
       model_args = (dataset.get_one_shot_iterator(), {
@@ -413,7 +423,7 @@ def main(unused_argv):
 
       # Create gradient update op.
       grad_updates = optimizer.apply_gradients(
-          grads_and_vars)#, global_step=global_step)
+          grads_and_vars, global_step=global_step)
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
       with tf.control_dependencies([update_op]):
