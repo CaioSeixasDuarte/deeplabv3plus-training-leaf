@@ -294,6 +294,7 @@ def main(unused_argv):
   tf.logging.info('Training on %s set', FLAGS.train_split)
 
   with tf.Graph().as_default() as graph:
+    sess = tf.Session()
     with tf.device(config.inputs_device()):
       dataset = data_generator.Dataset(
           dataset_name=FLAGS.dataset,
@@ -315,10 +316,7 @@ def main(unused_argv):
 
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
-      #global_step = tf.train.get_or_create_global_step()
-
-      # Create a variable to hold the global_step.
-      global_step = tf.Variable(0, trainable=False, name='global_step')
+      global_step = tf.train.get_or_create_global_step()
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -420,10 +418,8 @@ def main(unused_argv):
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
 
-      # Create a session.
-      sess = tf.Session(graph=graph)
-      # Initialize the variable
-      sess.run(global_step.initializer)
+      # Initialize all the variables
+      sess.run(tf.global_variables_initializer())
 
       with tf.control_dependencies([update_op]):
         train_tensor = tf.identity(total_loss, name='train_op')
