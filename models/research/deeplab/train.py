@@ -23,6 +23,7 @@ from __future__ import division
 from __future__ import print_function
 import six
 import tensorflow.compat.v1 as tf
+import tensorflow as tf2
 #from tensorflow.contrib import quantize as contrib_quantize
 contrib_quantize = tf.quantization.quantize
 
