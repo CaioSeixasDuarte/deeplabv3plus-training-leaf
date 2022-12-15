@@ -318,14 +318,7 @@ def main(unused_argv):
       #global_step = tf.train.get_or_create_global_step()
 
       # Create a variable to hold the global_step.
-      global_step_tensor = tf.Variable(0, trainable=False, name='global_step')
-      # Create a session.
-      sess = tf.Session(graph=graph)
-      # Initialize the variable
-      sess.run(global_step_tensor.initializer)
-      # Get the variable value.
-      #print('global_step: %s' % tf.compat.v1.train.global_step(sess,global_step_tensor))
-
+      global_step = tf.Variable(0, trainable=False, name='global_step')
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -426,6 +419,12 @@ def main(unused_argv):
           grads_and_vars, global_step=global_step)
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
+
+      # Create a session.
+      sess = tf.Session(graph=graph)
+      # Initialize the variable
+      sess.run(global_step.initializer)
+
       with tf.control_dependencies([update_op]):
         train_tensor = tf.identity(total_loss, name='train_op')
 
