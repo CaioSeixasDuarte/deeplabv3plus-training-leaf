@@ -318,7 +318,7 @@ def get_model_learning_rate(learning_policy,
       multi_steps learning rate decay.
   """
   #global_step = tf.train.get_or_create_global_step()
-  global_step = tf.Variable(0, name='global_step', trainable=False)
+  global_step = tf.train.global_step(sess, global_step_tensor)
 
   adjusted__lobal_step = tf.maximum(global_step - slow_start_step, 0)
   if decay_steps == 0.0:
