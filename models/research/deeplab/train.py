@@ -316,7 +316,13 @@ def main(unused_argv):
     # Create the global step on the device storing the variables.
     with tf.device(config.variables_device()):
       #global_step = tf.train.get_or_create_global_step()
-      #global_step = tf.Variable(0, trainable=False, name='global_step')
+
+      # Create a variable to hold the global_step.
+      global_step_tensor = tf.Variable(0, trainable=False, name='global_step')
+      # Create a session.
+      sess = tf.compat.v1.Session()
+      # Initialize the variable
+      sess.run(global_step_tensor.initializer)
 
       # Define the model and create clones.
       model_fn = _build_deeplab
@@ -414,7 +420,8 @@ def main(unused_argv):
 
       # Create gradient update op.
       grad_updates = optimizer.apply_gradients(
-          grads_and_vars)
+          grads_and_vars, global_step=tf.train.global_step(sess,
+global_step_tensor))
       update_ops.append(grad_updates)
       update_op = tf.group(*update_ops)
       with tf.control_dependencies([update_op]):
