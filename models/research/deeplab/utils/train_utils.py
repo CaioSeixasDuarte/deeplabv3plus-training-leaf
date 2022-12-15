@@ -164,7 +164,11 @@ def add_softmax_cross_entropy_loss_for_each_scale(scales_to_logits,
           top_k_pixels = tf.to_int32(top_k_percent_pixels * num_pixels)
         else:
           # Gradually reduce the mining percent to top_k_percent_pixels.
-          global_step = tf.to_float(tf.train.get_or_create_global_step())
+          #global_step = tf.to_float(tf.train.get_or_create_global_step())
+
+          # to load
+          global_step = tf.get_collection_ref('global_step')[0]
+         
           ratio = tf.minimum(1.0, global_step / hard_example_mining_step)
           top_k_pixels = tf.to_int32(
               (ratio * top_k_percent_pixels + (1.0 - ratio)) * num_pixels)
@@ -313,7 +317,12 @@ def get_model_learning_rate(learning_policy,
     ValueError: If `boundaries` and `boundary_learning_rates` are not set for
       multi_steps learning rate decay.
   """
-  global_step = tf.train.get_or_create_global_step()
+  #global_step = tf.train.get_or_create_global_step()
+
+
+  # to load
+  global_step = tf.get_collection_ref('global_step')[0]
+
   adjusted_global_step = tf.maximum(global_step - slow_start_step, 0)
   if decay_steps == 0.0:
     tf.logging.info('Setting decay_steps to total training steps.')
