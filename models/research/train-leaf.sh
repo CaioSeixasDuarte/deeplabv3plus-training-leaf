@@ -18,7 +18,7 @@ mkdir -p "${TRAIN_LOGDIR}"
 
 python "${WORK_DIR}"/train.py \
   --logtostderr \
-  --base_learning_rate=0.0001 \
+  --base_learning_rate=0.0001 \ #Para variar a taxa de aprendizado, deve-se alterar esse parâmetro (ex: 0.0001 ; 0.0005 ; 0.001)
   --training_number_of_steps=55000 \
   --save_from_step=50000 \
   --steps_interval=100 \
